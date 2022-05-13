@@ -1,0 +1,21 @@
+body {
+    background-color: aquamarine
+}
+
+@keyframes rotate {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loadingSpinner {
+    display: none;
+    justify-self: flex-end;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgb(77, 76, 76);
+    border-top-color: transparent;
+    border-radius: 50%;
+
+    animation: rotate 1s infinite linear;
+};
