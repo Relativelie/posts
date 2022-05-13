@@ -1,15 +1,9 @@
-export default class Pagination {
+export default class PaginationTemplate {
     constructor(currentPage, allPages, itemsPerPage, paginatedList) {
         this.currentPage = currentPage;
         this.allPages = allPages;
         this.itemsPerPage = itemsPerPage;
         this.paginatedList = paginatedList;
-    }
-
-    static range(start, end) {
-        return Array(end - start + 1)
-            .fill(undefined)
-            .map((_, idx) => start + idx);
     }
 
     changeCurrentPage = (current) => {

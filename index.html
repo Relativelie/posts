@@ -2,29 +2,34 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="./styles/loadingSpinner.css">
-
+    <link rel="stylesheet" href="./styles/loadingSpinner.css" />
+    <link rel="stylesheet" href="./components/pagination/pagination.css" />
 </head>
 
 <body>
     <div class="loading loadingSpinner"></div>
     <table class="postsTable">
         <thead class="postsTable__head">
-            <th></th>
-        </thead>
-        <tbody class="postsTable__body">
             <th>ID</th>
             <th>Title</th>
             <th>Body</th>
+        </thead>
+        <tbody class="postsTable__body">
         </tbody>
     </table>
     <p class="error"></p>
     <p class="fatal"></p>
-    
+    <div class="pagination">
+        <p class="pagination__option" role="presentation" data-pagination="prev">
+            Назад
+        </p>
+        <div class="pagination__numbers"></div>
+        <p class="pagination__option" role="presentation"  data-pagination="next">Вперед</p>
+    </div>
 
     <script type="module" src="./scripts/script.js"></script>
 </body>

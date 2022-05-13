@@ -13,6 +13,7 @@
     "rules": {
         "indent": ["error", 4, { "SwitchCase": 1 }],
         "import/extensions": "off",
-        "array-callback-return": "off"
+        "array-callback-return": "off",
+        "no-plusplus": "off"
     }
 }

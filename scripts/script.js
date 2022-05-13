@@ -1,7 +1,10 @@
-import Pagination from './pagination.js';
+import PaginationTemplate from '../components/pagination/paginationTemplate.js';
 import SendRequest from './requests.js';
 
 const GetRequest = new SendRequest();
+const Pagination = new PaginationTemplate();
+Pagination.itemsPerPage = 10;
+Pagination.currentPage = 1;
 GetRequest.requestErrorText = 'Something went wrong...';
 
 const showLoader = () => {
@@ -14,7 +17,8 @@ const showLoader = () => {
 
 const showTableBody = () => {
     document.querySelector('.postsTable').style.display = 'block';
-    GetRequest.result.map((item) => {
+    document.querySelector('.postsTable__body').innerHTML = '';
+    Pagination.paginatedList.map((item) => {
         document.querySelector('.postsTable__body').innerHTML += `
         <tr>
                 <td>${item.id}</td>
@@ -30,7 +34,7 @@ const showErrors = (elemClassName) => {
     document.querySelector(`.${elemClassName}`).textContent = `${GetRequest.requestErrorText} ${code}`;
 };
 
-const showItemsOnPage = () => {
+const showTableOnPage = () => {
     showLoader();
     if (!GetRequest.isRequestLoading) {
         if (GetRequest.isRequestSuccess) showTableBody();
@@ -39,10 +43,49 @@ const showItemsOnPage = () => {
     }
 };
 
+const range = (start, end) => Array(end - start + 1)
+    .fill(undefined)
+    .map((_, idx) => start + idx);
+
+const paginateItemClass = (value) => {
+    const activeClass = 'pagination__number_isActive';
+    const ordinaryClass = 'pagination__number';
+    if (value === Pagination.currentPage) {
+        return `${ordinaryClass} ${activeClass}`;
+    }
+    return `${ordinaryClass}`;
+};
+
+const moveToAnotherPage = (event) => {
+    const eventType = event.target.dataset.pagination;
+    let value;
+    if (eventType === 'next') {
+        value = Pagination.currentPage + 1;
+    } else if (eventType === 'prev') {
+        value = Pagination.currentPage - 1;
+    } else value = parseInt(event.target.innerText, 10);
+    if (value !== 0 && value !== Pagination.allPages + 1) {
+        Pagination.changeCurrentPage(value);
+        Pagination.changePaginatedList(GetRequest.result);
+        showTableBody();
+        document.querySelector('.pagination__number_isActive').classList.remove('pagination__number_isActive');
+        document.querySelector(`.pagination__numbers :nth-child(${value})`).classList.add('pagination__number_isActive');
+    }
+};
+
+const showPagination = () => {
+    document.querySelector('.pagination__numbers').innerHTML = '';
+    [...range(1, Pagination.allPages)].map((item) => {
+        document.querySelector('.pagination__numbers').innerHTML += `
+        <p class="${paginateItemClass(item)}">${item}</p>
+        `;
+    });
+};
+
 const sendGet = async (url, headers) => {
     try {
         GetRequest.sendRequestBegin();
-        showItemsOnPage();
+        showTableOnPage();
         const request = await fetch(
             url,
             {
@@ -53,15 +96,18 @@ const sendGet = async (url, headers) => {
         const result = await request.json();
         if (result.status === 'error') {
             GetRequest.sendRequestError(result.code);
-            showItemsOnPage();
+            showTableOnPage();
         } else {
             GetRequest.sendRequestSuccess();
             GetRequest.saveGetRequest(result);
-            showItemsOnPage();
+            Pagination.calcListAmount(result);
+            Pagination.changePaginatedList(result);
+            showTableOnPage();
+            showPagination();
         }
     } catch (err) {
         GetRequest.sendRequestFatal();
-        showItemsOnPage();
+        showTableOnPage();
     }
 };
 
@@ -76,12 +122,9 @@ const sendGetRequest = async () => {
 };
 
 sendGetRequest();
-const PaginationBlock = new Pagination();
-const moveToAnotherPage = (event) => {
-    
-    console.log(event);
-};
 
+const paginationOptionsOnPage = document.querySelectorAll('.pagination__option');
+paginationOptionsOnPage[0].addEventListener('click', (e) => moveToAnotherPage(e));
+paginationOptionsOnPage[1].addEventListener('click', (e) => moveToAnotherPage(e));
 
-document.querySelector('.pagination__option').addEventListener('click', (e) => moveToAnotherPage(e));
-
+document.querySelector('.pagination__numbers').addEventListener('click', (e) => moveToAnotherPage(e));

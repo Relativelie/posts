@@ -1,0 +1,22 @@
+.pagination__number.pagination__number_isActive {
+    color: #7EBC3C;
+}
+
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    max-width: 1079px;
+    width: 100%;
+    padding: 0 41px;
+}
+
+.pagination__numbers {
+    display: flex;
+}
+
+.pagination__number {
+    padding: 5px;
+    cursor: pointer;
+}
