@@ -77,5 +77,11 @@ const sendGetRequest = async () => {
 
 sendGetRequest();
 const PaginationBlock = new Pagination();
+const moveToAnotherPage = (event) => {
+    
+    console.log(event);
+};
 
+
+document.querySelector('.pagination__option').addEventListener('click', (e) => moveToAnotherPage(e));
 
