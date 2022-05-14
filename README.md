@@ -4,4 +4,4 @@ There you can view posts table with id, title and description fields, delete som
 Online demo: https://relativelie.github.io/posts/
 
 Used: 
-- pure js
+- vanilla js
