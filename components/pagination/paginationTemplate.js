@@ -21,4 +21,24 @@ export default class PaginationTemplate {
         const amount = Math.ceil(data.length / this.itemsPerPage);
         this.allPages = amount;
     };
+
+    paginateItemClass = (value) => {
+        const activeClass = 'pagination__number_isActive';
+        const ordinaryClass = 'pagination__number';
+        if (value === this.currentPage) {
+            return `${ordinaryClass} ${activeClass}`;
+        }
+        return `${ordinaryClass}`;
+    };
+
+    calcValueForTransition = (event) => {
+        const eventType = event.target.dataset.pagination;
+        let value;
+        if (eventType === 'next') {
+            value = this.currentPage + 1;
+        } else if (eventType === 'prev') {
+            value = this.currentPage - 1;
+        } else value = parseInt(event.target.innerText, 10);
+        return value;
+    };
 }

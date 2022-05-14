@@ -1,39 +1,36 @@
-export default class SendRequest {
+export default class RequestTemplate {
     constructor(
         isRequestLoading,
         isRequestSuccess,
-        isRequestFatal,
         isRequestError,
         errorCode,
         result,
     ) {
         this.isRequestLoading = isRequestLoading;
         this.isRequestSuccess = isRequestSuccess;
-        this.isRequestFatal = isRequestFatal;
         this.isRequestError = isRequestError;
         this.errorCode = errorCode;
         this.result = result;
     }
 
-    static requestErrorText;
+    requestErrorText = 'Something went wrong...';
 
-    sendRequestSuccess = () => {
+    requestSuccess = () => {
         this.isRequestSuccess = true;
         this.isRequestLoading = false;
     };
 
-    sendRequestBegin = () => {
+    requestBegin = () => {
         this.isRequestLoading = true;
     };
 
-    sendRequestFatal = () => {
-        this.isRequestFatal = true;
+    requestFatal = () => {
         this.isRequestLoading = false;
     };
 
-    sendRequestError = (value) => {
-        this.isRequestError = true;
+    requestError = (value) => {
         this.isRequestLoading = false;
+        this.isRequestError = true;
         this.errorCode = value;
     };
 
