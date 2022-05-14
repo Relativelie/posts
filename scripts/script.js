@@ -1,8 +1,8 @@
-import ContentTemplate from '../components/content/contentTemplate.js';
-import FilterTemplate from '../components/filter/filterTemplate.js';
-import PaginationTemplate from '../components/pagination/paginationTemplate.js';
-import SearchTemplate from '../components/search/searchTemplate.js';
-import RequestTemplate from '../components/request/requestTemplate.js';
+import ContentTemplate from './components/contentTemplate.js';
+import FilterTemplate from './components/filterTemplate.js';
+import PaginationTemplate from './components/paginationTemplate.js';
+import SearchTemplate from './components/searchTemplate.js';
+import RequestTemplate from './components/requestTemplate.js';
 
 const pagination = new PaginationTemplate(1, 1, 10, []);
 const getRequest = new RequestTemplate(false, false, '', []);
@@ -30,9 +30,11 @@ const showTableBody = (paginationObj) => {
     paginationObj.paginatedList.map((item) => {
         document.querySelector('.postsTable__body').innerHTML += `
         <tr>
-                <td>${item.id}</td>
-                <td>${item.title}</td>
-                <td>${item.body}</td>
+                <td class="tableBody__item tableBody__item_id">${item.id}</td>
+                <td class="tableBody__item">${item.title}</td>
+                <td class="tableBody__item">
+                    <div>${item.body}</div>
+                </td>
         </tr>
         `;
     });
@@ -114,10 +116,20 @@ const sendGetRequest = async (requestObj, contentObj, paginationObj) => {
 
 sendGetRequest(getRequest, content, pagination);
 
+const addActiveFilterClass = (filterObj) => {
+    const activeClass = 'postsTable__head__content_activeFilter';
+    const activeFilterElem = document.querySelector(`.${activeClass}`);
+    if (activeFilterElem !== null) activeFilterElem.classList.remove(activeClass);
+    if (filterObj.activeFilter.length !== 0) {
+        document.querySelector(`.postsTable__head_${filterObj.activeFilter} img`).classList.add(activeClass);
+    }
+};
+
 const searchingModeVerify = (element, searchObj, paginationObj, filterObj, contentObj) => {
     if (searchObj.searchingItem.length !== 0) {
         filterObj.turnOnFilter(searchObj.searchList, element);
     } else filterObj.turnOnFilter(contentObj.data, element);
+    addActiveFilterClass(filterObj);
     paginationObj.calcListAmount(filterObj.filteredList);
     paginationObj.changeCurrentPage(1);
     paginationObj.changePaginatedList(filterObj.filteredList);

@@ -7,34 +7,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="./styles/loadingSpinner.css" />
-    <link rel="stylesheet" href="./components/pagination/pagination.css" />
+    <link rel="stylesheet" href="./styles/pagination.css" />
+    <link rel="stylesheet" href="./styles/search.css" />
+    <link rel="stylesheet" href="./styles/tableStyles.css" />
+    <link rel="stylesheet" href="./styles/index.css" />
 </head>
 
 <body>
-    <div class="loading loadingSpinner"></div>
-    <div class="searching">
-        <input class="searching__input" type="text">
+    <div class="container">
+        <div>
+            <div class="loading loadingSpinner"></div>
+            <div class="searching">
+                <input class="searching__input" type="text">
+                <img class="searching__image" src="./images/search.png" alt="search">
+            </div>
+            <table class="postsTable">
+                <thead class="postsTable__head">
+                    <th class="postsTable__head_id">
+                        <div class="postsTable__head__filteringBtn" data-filterby="id">
+                        </div>
+                        <div class="postsTable__head__content">
+                            <p>ID</p>
+                            <img src="./images/filterImage.png" alt="table id">
+                        </div>
+                    </th>
+                    <th class="postsTable__head_title">
+                        <div class="postsTable__head__filteringBtn" data-filterby="title">
+                        </div>
+                        <div class="postsTable__head__content">
+                            <p>Title</p>
+                            <img src="./images/filterImage.png" alt="table title">
+                        </div>
+                    </th>
+                    <th class="postsTable__head_body">
+                        <div class="postsTable__head__filteringBtn" data-filterby="body">
+                        </div>
+                        <div class="postsTable__head__content">
+                            <p>Body</p>
+                            <img src="./images/filterImage.png" alt="table body">
+                        </div>
+                    </th>
+                </thead>
+                <tbody class="postsTable__body">
+                </tbody>
+            </table>
+            <p class="error"></p>
+        </div>
+        <div class="pagination">
+            <p class="pagination__option" role="presentation" data-pagination="prev">
+                Back
+            </p>
+            <div class="pagination__numbers"></div>
+            <p class="pagination__option" role="presentation" data-pagination="next">
+                Next
+            </p>
+        </div>
     </div>
-    <table class="postsTable">
-        <thead class="postsTable__head">
-            <th data-filterby="id">ID</th>
-            <th data-filterby="title">Title</th>
-            <th data-filterby="body">Body</th>
-        </thead>
-        <tbody class="postsTable__body">
-        </tbody>
-    </table>
-    <p class="error"></p>
-    <div class="pagination">
-        <p class="pagination__option" role="presentation" data-pagination="prev">
-            Back
-        </p>
-        <div class="pagination__numbers"></div>
-        <p class="pagination__option" role="presentation" data-pagination="next">
-            Next
-        </p>
-    </div>
-
     <script type="module" src="./scripts/script.js"></script>
 </body>
 
