@@ -38,11 +38,12 @@ const showTableBody = (paginationObj) => {
     });
 };
 
-const moveToAnotherPage = (event, paginationObj) => {
+const moveToAnotherPage = (event, paginationObj, filterObj, contentObj) => {
     const value = paginationObj.calcValueForTransition(event, paginationObj);
+    const data = filterObj.filteredList.length !== 0 ? filterObj.filteredList : contentObj.data;
     if (value !== 0 && value !== paginationObj.allPages + 1) {
         paginationObj.changeCurrentPage(value);
-        paginationObj.changePaginatedList(content.data);
+        paginationObj.changePaginatedList(data);
         showTableBody(paginationObj);
         showPagination(paginationObj);
     }
@@ -113,44 +114,47 @@ const sendGetRequest = async (requestObj, contentObj, paginationObj) => {
 
 sendGetRequest(getRequest, content, pagination);
 
-const searchingModeVerify = (element, searchObj, paginationObj, filterObj) => {
+const searchingModeVerify = (element, searchObj, paginationObj, filterObj, contentObj) => {
     if (searchObj.searchingItem.length !== 0) {
         filterObj.turnOnFilter(searchObj.searchList, element);
-    } else filterObj.turnOnFilter(content.data, element);
+    } else filterObj.turnOnFilter(contentObj.data, element);
+    paginationObj.calcListAmount(filterObj.filteredList);
+    paginationObj.changeCurrentPage(1);
     paginationObj.changePaginatedList(filterObj.filteredList);
+    showPagination(paginationObj);
     showTableBody(paginationObj);
 };
 
-const filtering = (event, searchObj, paginationObj, filterObj) => {
+const filtering = (event, searchObj, paginationObj, filterObj, contentObj) => {
     const filterBy = event.target.dataset.filterby;
     if (filterObj.activeFilter === filterBy) {
         filterObj.turnOffFilter();
-        searchingModeVerify('', searchObj, paginationObj, filterObj);
+        searchingModeVerify('', searchObj, paginationObj, filterObj, contentObj);
     } else if (filterBy !== undefined) {
-        searchingModeVerify(filterBy, searchObj, paginationObj, filterObj);
+        searchingModeVerify(filterBy, searchObj, paginationObj, filterObj, contentObj);
     }
 };
 
-const changeSearchingValue = (event, searchObj, paginationObj, filterObj) => {
-    searchObj.saveSearchList(content.data, event.target.value);
-    searchingModeVerify(filterObj.activeFilter, searchObj, paginationObj, filterObj);
+const changeSearchingValue = (event, searchObj, paginationObj, filterObj, contentObj) => {
+    searchObj.saveSearchList(contentObj.data, event.target.value);
+    searchingModeVerify(filterObj.activeFilter, searchObj, paginationObj, filterObj, contentObj);
 };
 
 const paginationOptionsOnPage = document.querySelectorAll(
     '.pagination__option',
 );
-paginationOptionsOnPage[0].addEventListener('click', (e) => moveToAnotherPage(e, pagination));
-paginationOptionsOnPage[1].addEventListener('click', (e) => moveToAnotherPage(e, pagination));
+paginationOptionsOnPage[0].addEventListener('click', (e) => moveToAnotherPage(e, pagination, filter, content));
+paginationOptionsOnPage[1].addEventListener('click', (e) => moveToAnotherPage(e, pagination, filter, content));
 
 document
     .querySelector('.pagination__numbers')
-    .addEventListener('click', (e) => moveToAnotherPage(e, pagination));
+    .addEventListener('click', (e) => moveToAnotherPage(e, pagination, filter, content));
 
 const filterOptionsOnPage = document.querySelectorAll('.postsTable__head th');
-filterOptionsOnPage[0].addEventListener('click', (e) => filtering(e, search, pagination, filter));
-filterOptionsOnPage[1].addEventListener('click', (e) => filtering(e, search, pagination, filter));
-filterOptionsOnPage[2].addEventListener('click', (e) => filtering(e, search, pagination, filter));
+filterOptionsOnPage[0].addEventListener('click', (e) => filtering(e, search, pagination, filter, content));
+filterOptionsOnPage[1].addEventListener('click', (e) => filtering(e, search, pagination, filter, content));
+filterOptionsOnPage[2].addEventListener('click', (e) => filtering(e, search, pagination, filter, content));
 
 document
     .querySelector('.searching__input')
-    .addEventListener('input', (e) => changeSearchingValue(e, search, pagination, filter));
+    .addEventListener('input', (e) => changeSearchingValue(e, search, pagination, filter, content));
