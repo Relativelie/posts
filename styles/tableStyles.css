@@ -46,18 +46,38 @@ th {
 }
 
 .tableBody__item {
-    vertical-align: center;
     padding: 10px;
     border-spacing: 0px;
     border: 1px solid #E3E6EC;
 }
 
 .tableBody__item_id {
+    display: grid;
+    grid-template-columns: 10px 1fr;
+    grid-template-rows: 80px;
+    padding: 0;
+    align-items: center;
     text-align: center;
 }
 
-.tableBody__item div {
+.tableBody__item_body {
     height: 60px;
     box-sizing: border-box;
     overflow: auto;
+}
+
+.tableBody__btnContainer {
+    height: 100%;
+}
+
+.tableBody__deleteItemBtn {
+    height: 100%;
+    border: none;
+    cursor: pointer;
+    transition: all .5s ease;
+    background-color: rgba(235, 129, 129, 0.621);
+}
+
+.tableBody__deleteItemBtn:hover {
+    background-color: rgb(193, 46, 46);
 }
